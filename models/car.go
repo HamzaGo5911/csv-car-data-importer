@@ -4,11 +4,11 @@ import "github.com/fatih/structs"
 
 // Car holds information for cars
 type Car struct {
-	ID           string `json:"id" structs:"id"`
-	Name         string `json:"name" structs:"name"`
-	Year         string `json:"year" structs:"year"`
-	SellingPrice string `json:"selling_price" structs:"selling_price"`
-	Transmission string `json:"transmission" structs:"transmission"`
+	ID           int     `json:"id" structs:"id"`
+	Name         string  `json:"name" structs:"name"`
+	Year         int     `json:"year" structs:"year"`
+	SellingPrice float64 `json:"selling_price" structs:"selling_price"`
+	Transmission string  `json:"transmission" structs:"transmission"`
 }
 
 // Map converts structs to a map representation

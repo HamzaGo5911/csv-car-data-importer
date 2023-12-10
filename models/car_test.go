@@ -7,10 +7,10 @@ import (
 
 func TestCar_Map(t *testing.T) {
 	car := Car{
-		ID:           "1",
+		ID:           1,
 		Name:         "Test Car",
-		Year:         "2023",
-		SellingPrice: "25000",
+		Year:         2023,
+		SellingPrice: 25000.00,
 		Transmission: "Automatic",
 	}
 

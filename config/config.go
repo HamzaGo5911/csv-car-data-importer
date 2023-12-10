@@ -4,10 +4,11 @@ import (
 	"fmt"
 	"os"
 
-	"csv-car-data-importer/models"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+
+	"csv-car-data-importer/models"
 )
 
 var DB *gorm.DB
