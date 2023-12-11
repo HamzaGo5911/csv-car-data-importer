@@ -1,12 +1,13 @@
 package service
 
 import (
-	"csv-car-data-importer/db"
-	"csv-car-data-importer/models"
 	"encoding/csv"
 	"fmt"
 	"os"
 	"strconv"
+
+	"github.com/HamzaGo5911/csv-car-data-importer/db"
+	"github.com/HamzaGo5911/csv-car-data-importer/models"
 )
 
 func ImportCSVToDatabase(filePath string) error {

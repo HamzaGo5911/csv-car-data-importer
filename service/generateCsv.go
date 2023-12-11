@@ -1,8 +1,8 @@
 package service
 
 import (
-	"csv-car-data-importer/models"
 	"encoding/csv"
+	"github.com/HamzaGo5911/csv-car-data-importer/models"
 	"log"
 	"os"
 	"strconv"

@@ -1,55 +1,70 @@
 package main
 
 import (
-	"csv-car-data-importer/config"
-	"csv-car-data-importer/db"
-	"csv-car-data-importer/models"
-	"csv-car-data-importer/service"
-	"fmt"
+	"github.com/HamzaGo5911/csv-car-data-importer/service"
 	"log"
-	"net/http"
+	"os"
+	"os/signal"
+	"sync"
 	"time"
+
+	"github.com/HamzaGo5911/csv-car-data-importer/config"
+	"github.com/HamzaGo5911/csv-car-data-importer/db"
+	"github.com/gin-gonic/gin"
+)
+
+var (
+	wg sync.WaitGroup
 )
 
 func main() {
 	config.ConnectToDb()
+	go backgroundTask()
 
-	err := service.GenerateCSV()
-	if err != nil {
-		log.Fatalf("Error generating CSV: %s", err)
-	}
+	r := gin.Default()
 
-	filePath := "cars.csv"
-	err = service.ImportCSVToDatabase(filePath)
-	if err != nil {
-		fmt.Println("Error importing CSV:", err)
-		return
-	}
-	fmt.Println("CSV data imported successfully to the database")
+	carGroup := r.Group("/api")
+	carGroup.GET("/cars", db.GetCars)
+
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, os.Interrupt)
 
 	go func() {
-		for {
-			backgroundTask()
-			time.Sleep(24 * time.Hour)
-		}
+		<-quit
+		log.Println("Server shutting down...")
+
+		wg.Wait() // Wait for background goroutines to finish
+		log.Println("Background tasks finished. Exiting...")
+		os.Exit(0)
 	}()
 
-	// Start HTTP server
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Welcome to the CSV Car Data Importer!")
-	})
-
-	err = http.ListenAndServe(":8080", nil)
-	if err != nil {
-		log.Fatal("Server error:", err)
+	if err := r.Run(":8080"); err != nil {
+		log.Fatalf("Server failed to start: %v", err)
 	}
 }
 
 func backgroundTask() {
-	var car = models.Car{} // This line might need to be adjusted to create meaningful sample data
-	if err := db.SaveData(car); err != nil {
-		log.Printf("Error saving car data: %s", err)
-	} else {
-		fmt.Println("Car data saved successfully")
+	ticker := time.NewTicker(time.Hour)
+	defer ticker.Stop()
+
+	wg.Add(1)
+	defer wg.Done()
+
+	importData := func() {
+		err := service.ImportCSVToDatabase("cars.csv")
+		if err != nil {
+			log.Printf("Error importing CSV to database: %v", err)
+		} else {
+			log.Println("CSV imported successfully")
+		}
+	}
+
+	importData() // Perform initial import on start
+
+	for {
+		select {
+		case <-ticker.C:
+			importData()
+		}
 	}
 }
