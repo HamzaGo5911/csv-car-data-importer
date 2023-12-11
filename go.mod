@@ -1,4 +1,4 @@
-module csv-car-data-importer
+module github.com/HamzaGo5911/csv-car-data-importer
 
 go 1.21.3
 

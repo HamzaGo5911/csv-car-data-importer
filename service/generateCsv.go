@@ -1,13 +1,15 @@
 package service
 
 import (
-	"csv-car-data-importer/models"
 	"encoding/csv"
 	"log"
 	"os"
 	"strconv"
+
+	"github.com/HamzaGo5911/csv-car-data-importer/models"
 )
 
+// GenerateCSV generates a CSV file with sample car data
 func GenerateCSV() error {
 	file, err := os.Create("cars.csv")
 	if err != nil {

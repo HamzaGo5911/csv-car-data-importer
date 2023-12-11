@@ -2,13 +2,12 @@ package config
 
 import (
 	"fmt"
+	"github.com/HamzaGo5911/csv-car-data-importer/models"
 	"os"
 
 	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-
-	"csv-car-data-importer/models"
 )
 
 var DB *gorm.DB

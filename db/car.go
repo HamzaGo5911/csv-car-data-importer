@@ -1,9 +1,10 @@
 package db
 
 import (
-	"csv-car-data-importer/config"
-	"csv-car-data-importer/models"
 	"fmt"
+
+	"github.com/HamzaGo5911/csv-car-data-importer/config"
+	"github.com/HamzaGo5911/csv-car-data-importer/models"
 )
 
 // SaveData saves the car data in the database

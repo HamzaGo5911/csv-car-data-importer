@@ -1,14 +1,16 @@
 package service
 
 import (
-	"csv-car-data-importer/db"
-	"csv-car-data-importer/models"
 	"encoding/csv"
 	"fmt"
 	"os"
 	"strconv"
+
+	"github.com/HamzaGo5911/csv-car-data-importer/db"
+	"github.com/HamzaGo5911/csv-car-data-importer/models"
 )
 
+// ImportCSVToDatabase reads a CSV file and imports its data into the database
 func ImportCSVToDatabase(filePath string) error {
 	file, err := os.Open(filePath)
 	if err != nil {
